@@ -26,7 +26,17 @@ A python wrapper for microsoft services REST API (currently: Graph and PowerBI)
 Features
 --------
 
-* TODO
+* Graph
+   * Get Group members
+   * Add users to group
+   * Remove users from group
+
+* PowerBI
+    * Get Workspaces
+    * Grant Workspace Dataset permission to user
+    * Update Workspace Dataset permission to user
+    * Revoke Workspace permissions from user
+
 
 Credits
 -------
