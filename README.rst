@@ -6,7 +6,7 @@ Microsoft Service Wrapper
 .. image:: https://img.shields.io/pypi/v/microsoft_service_wrapper.svg
         :target: https://pypi.python.org/pypi/microsoft_service_wrapper
 
-.. image:: https://github.com/lucas8107/microsoft-service-wrapper/actions/workflows/Tests/badge.svg
+.. image:: https://github.com/lucas8107/microsoft-service-wrapper/actions/workflows/tests.yml/badge.svg
         :target: https://github.com/lucas8107/microsoft-service-wrapper/actions/workflows/tests.yml
 
 .. image:: https://readthedocs.org/projects/microsoft-service-wrapper/badge/?version=latest
