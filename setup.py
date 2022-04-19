@@ -39,7 +39,7 @@ setup(
     ),
     test_suite="tests",
     tests_require=test_requirements,
-    url="https://github.com/lucas8107/microsoft_service_wrapper",
+    url="https://github.com/lucas8107/microsoft-service-wrapper",
     version="0.1.1",
     zip_safe=False,
 )
