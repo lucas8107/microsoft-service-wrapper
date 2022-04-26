@@ -5,16 +5,15 @@ from .constants import (
     DatasetUserAccessRightEntry,
     DatasetUserAccessRight,
     PrincipalType,
+    GroupUserAccessRight,
+    ServicePrincipalProfile,
 )
+from .interfaces.groups import Group, GroupsApi
 
 
-class MsPowerBiClient(BaseClient):
-
-    scopes = ["https://analysis.windows.net/powerbi/api/.default"]
-
+class MsPowerBiClient(BaseClient, GroupsApi):
     def get_workspaces(self, *args, **kwargs):
         workspaces = self.api_call(url="https://api.powerbi.com/v1.0/myorg/groups")
-
         return workspaces
 
     def grant_workspace_dataset_permission_to_user(

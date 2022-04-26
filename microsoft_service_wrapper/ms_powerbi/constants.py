@@ -1,4 +1,7 @@
 from enum import Enum
+from dataclasses import dataclass
+
+SCOPES = ["https://analysis.windows.net/powerbi/api/.default"]
 
 
 class DatasetUserAccessRightEntry(str, Enum):
@@ -35,3 +38,19 @@ class PrincipalType(str, Enum):
     GROUP = "Group"  # Group principal type
     NONE = "None"  # No principal type. Use for whole organization level access.
     USER = "User"  # User principal type
+
+
+class GroupUserAccessRight(str, Enum):
+    ADMIN = "Admin"  # Administrator rights to workspace content
+    CONTRIBUTOR = (
+        "Contributor"  # Read and explore (ReadExplore) access to workspace content
+    )
+    MEMBER = "Member"  # Read, reshare and explore (ReadReshareExplore) access rights to workspace content
+    NONE = "None"  # No access to workspace content
+    VIEWER = "Viewer"  # Read-only (Read) access to workspace conten
+
+
+@dataclass
+class ServicePrincipalProfile:
+    displayName: str
+    id: str
