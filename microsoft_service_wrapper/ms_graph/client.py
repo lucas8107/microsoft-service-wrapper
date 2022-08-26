@@ -6,6 +6,8 @@ import pandas as pd
 
 from ..generic.client import BaseClient
 
+MAX_USERS_PER_REQUEST = 20
+
 
 class MsGraphClient(BaseClient):
 
@@ -35,19 +37,21 @@ class MsGraphClient(BaseClient):
 
         group_id = self.group_map[group_name]
 
-        data = {
-            "members@odata.bind": [
-                f"https://graph.microsoft.com/v1.0/users/{email}"
-                for email in user_email_list
-            ]
-        }
+        for i in range(0, len(user_email_list), MAX_USERS_PER_REQUEST):
 
-        return self.api_call(
-            url=f"https://graph.microsoft.com/v1.0/groups/{group_id}",
-            body=json.dumps(data),
-            extra_headers={"Content-Type": "application/json"},
-            method="patch",
-        )
+            data = {
+                "members@odata.bind": [
+                    f"https://graph.microsoft.com/v1.0/users/{email}"
+                    for email in user_email_list[i : i + MAX_USERS_PER_REQUEST]
+                ]
+            }
+
+            self.api_call(
+                url=f"https://graph.microsoft.com/v1.0/groups/{group_id}",
+                body=json.dumps(data),
+                extra_headers={"Content-Type": "application/json"},
+                method="patch",
+            )
 
     def remove_users_from_group(
         self, group_name: str, user_email_list: List[str]
@@ -63,7 +67,7 @@ class MsGraphClient(BaseClient):
             return
 
         df = pd.DataFrame(data=group_members)
-        user_id_list = list(df[df["userPrincipalName"].isin(user_email_list)]["id"])
+        user_id_list = list(df[df["id"].isin(user_email_list)]["id"])
 
         for user_id in user_id_list:
             try:
