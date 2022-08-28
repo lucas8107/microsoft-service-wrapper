@@ -32,6 +32,25 @@ def api_call_factory(
                 data=body,
             )
             api_response.raise_for_status()
+
+            if response_has_json(api_response):
+                acc = []
+
+                data = api_response.json()
+                acc+=data['value']
+
+                while '@odata.nextLink' in data:
+                    response = session.request(method=method, url=data['@odata.nextLink'],headers={
+                        "Authorization": f'Bearer {result["access_token"]}',
+                        **extra_headers,
+                    },
+                    data=body,)
+                    response.raise_for_status()
+                    data = response.json()
+                    acc+=data['value']
+
+                return acc
+
         except Exception as e:
             reason = (
                 f"Request failed! Reason [{e}] with code {api_response.status_code}"
@@ -39,9 +58,6 @@ def api_call_factory(
             if response_has_json(api_response):
                 reason += f"\n{api_response.json()}"
             raise Exception(reason)
-        else:
-            if response_has_json(api_response):
-                return api_response.json().get("value")
 
     return api_call
 
