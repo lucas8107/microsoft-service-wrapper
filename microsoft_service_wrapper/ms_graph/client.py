@@ -67,7 +67,7 @@ class MsGraphClient(BaseClient):
             return
 
         df = pd.DataFrame(data=group_members)
-        user_id_list = list(df[df["id"].isin(user_email_list)]["id"])
+        user_id_list = list(df[df["userPrincipalName"].isin(user_email_list)]["id"])
 
         for user_id in user_id_list:
             try:
