@@ -2,6 +2,12 @@
 History
 =======
 
+0.3.1 (2022-10-13)
+------------------
+
+* Fix attrib name on graph remove group users
+
+
 0.3.0 (2022-08-28)
 ------------------
 
