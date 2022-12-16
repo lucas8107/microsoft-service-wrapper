@@ -19,7 +19,7 @@ class MsGraphClient(BaseClient):
 
     def get_pbi_groups(self) -> Dict[str, str]:
         groups = self.api_call(
-            url="https://graph.microsoft.com/v1.0/groups?$filter=startsWith(displayname, 'pbi_')&$select=displayName,id",
+            url="https://graph.microsoft.com/v1.0/groups?$filter=startsWith(displayname, 'pbi')&$select=displayName,id",
             extra_headers={"ConsistencyLevel": "eventual"},
         )
 
