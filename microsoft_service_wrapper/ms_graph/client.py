@@ -1,13 +1,14 @@
 import msal
 from typing import List, Dict
 import json
-
-import pandas as pd
+import logging
 
 from ..generic.client import BaseClient
 
 MAX_USERS_PER_REQUEST = 20
 
+
+logger = logging.getLogger(__name__)
 
 class MsGraphClient(BaseClient):
 
@@ -23,8 +24,9 @@ class MsGraphClient(BaseClient):
             extra_headers={"ConsistencyLevel": "eventual"},
         )
 
-        df = pd.DataFrame(data=groups)
-        return dict(zip(list(df["displayName"]), list(df["id"])))
+        return {
+            group["displayName"]: group["id"] for group in groups
+        }
 
     def get_group_members(self, group_id):
         return self.api_call(
@@ -66,8 +68,7 @@ class MsGraphClient(BaseClient):
         if not group_members:
             return
 
-        df = pd.DataFrame(data=group_members)
-        user_id_list = list(df[df["userPrincipalName"].isin(user_email_list)]["id"])
+        user_id_list = [user["id"] for user in group_members if user["userPrincipalName"] in user_email_list]
 
         for user_id in user_id_list:
             try:
@@ -75,5 +76,5 @@ class MsGraphClient(BaseClient):
                     url=f"https://graph.microsoft.com/v1.0/groups/{group_id}/members/{user_id}/$ref",
                     method="delete",
                 )
-            except Exception as e:
-                print(e)
+            except Exception:
+                logger.exception()
